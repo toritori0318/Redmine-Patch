@@ -95,7 +95,6 @@ class IssuesController < ApplicationController
   end
   
   def show
-    @users =  User.find_by_select_member()
     @journals = @issue.journals.find(:all, :include => [:user, :details], :order => "#{Journal.table_name}.created_on ASC")
     @journals.each_with_index {|j,i| j.indice = i+1}
     @journals.reverse! if User.current.wants_comments_in_reverse_order?
@@ -113,7 +112,6 @@ class IssuesController < ApplicationController
   # Add a new issue
   # The new issue will be created from an existing one if copy_from parameter is given
   def new
-    @users =  User.find_by_select_member()
     @issue = Issue.new
     @issue.copy_from(params[:copy_from]) if params[:copy_from]
     @issue.project = @project
@@ -152,7 +150,7 @@ class IssuesController < ApplicationController
         if params[:send_mail]
           @issue.mail_kind = params[:mail_kind] if params[:mail_kind];
           @issue.mail_text = params[:mail_text] if params[:mail_text];
-          @issue.sel_users = params[:sel_users] if params[:sel_users];
+          @issue.mail_user_ids = params[:issue]['mail_user_ids'] if params[:issue]['mail_user_ids'];
           Mailer.deliver_issue_add(@issue) if Setting.notified_events.include?('issue_added')
         end
         redirect_to(params[:continue] ? { :action => 'new', :tracker_id => @issue.tracker } :
@@ -203,7 +201,7 @@ class IssuesController < ApplicationController
           if params[:send_mail]
             @issue.mail_kind = params[:mail_kind] if params[:mail_kind];
             @issue.mail_text = params[:mail_text] if params[:mail_text];
-            @issue.sel_users = params[:sel_users] if params[:sel_users];
+            @issue.mail_user_ids = params[:issue]['mail_user_ids'] if params[:issue]['mail_user_ids'];
             Mailer.deliver_issue_edit(journal) if Setting.notified_events.include?('issue_updated')
           end
         end
@@ -261,7 +259,7 @@ class IssuesController < ApplicationController
           if params[:send_mail]
             @issue.mail_kind = params[:mail_kind] if params[:mail_kind];
             @issue.mail_text = params[:mail_text] if params[:mail_text];
-            @issue.sel_users = params[:sel_users] if params[:sel_users];
+            @issue.mail_user_ids = params[:issue]['mail_user_ids'] if params[:issue]['mail_user_ids'];
             Mailer.deliver_issue_edit(journal) if journal.details.any? && Setting.notified_events.include?('issue_updated')
           end
         else

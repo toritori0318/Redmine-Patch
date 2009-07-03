@@ -1,0 +1,96 @@
+<SCRIPT LANGUAGE="JavaScript">
+  function mailCheckChange() {
+    if(document.getElementById('send_mail').checked) {
+      document.getElementById('mailbox').style.display = '';
+      document.getElementById('mailfld').setAttribute('class','box');
+      document.getElementById('mailleg').setAttribute('class','mailenb');
+    } else {
+      document.getElementById('mailbox').style.display = 'none';
+      document.getElementById('mailfld').setAttribute('class','boxdis');
+      document.getElementById('mailleg').setAttribute('class','maildis');
+    }
+  }
+  function memberCheckChange(bln) {
+    var sel = document.getElementById('select');
+    var selc = sel.childNodes;
+    for (var i=0;i<selc.length;i++){
+      if(selc[i].tagName =='LABEL'){
+        selc[i].childNodes[0].checked = bln;
+      }
+    }
+  }
+   function radioChange( disp ) {
+      document.getElementById('mail_text').disabled = disp;
+      if(document.getElementById('mail_kind_select_member').checked == true) {
+        document.getElementById('memberbox').style.display = '';
+      } else {
+        document.getElementById('memberbox').style.display = 'none';
+      }
+   }
+</SCRIPT>
+
+<style type="text/css"><!--
+.mailenb{
+ background-color:#F6F6F6;
+ color:#505050;
+}
+.maildis{
+ background-color:silver;
+ color:white;
+}
+.boxdis{
+ padding:6px;
+ margin-bottom: 10px;
+ background-color:silver;
+ color:white;
+ line-height:1.5em;
+ border: 1px solid #e4e4e4;
+}
+.tabular p.mail{
+ margin: 0;
+ padding: 5px 0 8px 20px;
+}
+.tabular div.select{
+ border: double 6px #FFF;
+ margin-left: 10px;
+ padding: 1em;
+ background-color:silver;
+}
+.tabular label.selection{
+ font-weight: normal;
+ margin-left: 0;
+ margin-top: -10px;
+ text-align: left;
+ width: 200px;
+}
+--></style>
+
+<fieldset id='mailfld' class='boxdis'><legend id='mailleg' class='maildis'><%= l(:field_mail_notification) %></legend>
+  <%= check_box_tag('send_mail', 1, @send_mail, :onclick =>'mailCheckChange();') %> <%= l(:label_mailm_action) %>
+  <div id="mailbox" style="display:none">
+
+<p class='mail'>
+ <span>
+    &nbsp;<%= radio_button_tag 'mail_kind', 'select_member', true, :onclick => 'radioChange(true);' %> <%= l(:label_mailm_select_member) %><br />
+    <div id="memberbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="button" onclick="memberCheckChange(true);" value="全てチェック">
+      <input type="button" onclick="memberCheckChange(false);" value="全て外す">
+
+      <div id="select" class="select" >
+        <% @issue.project.users.sort.each do |user| -%>
+        <label class="selection"><%=  check_box_tag 'issue[mail_user_ids][]', user.id ,true %> <%=h user %></label>
+        <% end -%>
+      </div>
+
+    </div>
+ </span>
+</p>
+
+<p class='mail'>
+ <span>
+    &nbsp;<%= radio_button_tag 'mail_kind', 'text', (@mail_kind == 'text'), :onclick => 'radioChange(false);' %> <%= l(:label_mailm_text) %>
+    <%= text_field_tag 'mail_text', @mail_text, :disabled => true, " size" => 120 %>
+ </span>
+</p>
+  </div>
+</fieldset>

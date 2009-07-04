@@ -1,0 +1,8 @@
+<h3><%=l(:label_recent_messages)%></h3>
+<% reported_messages = Message.find(:all, 
+                                :conditions => ["author_id=? ", user.id],
+                                :limit => 10, 
+                                :order => "#{Message.table_name}.updated_on DESC") %>
+
+<%= render :partial => 'messages/list_simple', :locals => { :messages => reported_messages } %>
+

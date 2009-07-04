@@ -1,0 +1,22 @@
+<% if activitys && activitys.any? %>
+
+<div id="activity">
+
+<% activitys.keys.sort.reverse.each do |day| %>
+<h4><%= format_activity_day(day) %></h4>
+<dl>
+<% activitys[day].sort {|x,y| y.event_datetime <=> x.event_datetime }.each do |e| -%>
+  <dt class="<%= e.event_type %>">
+  <span class="time"><%= format_time(e.event_datetime, false) %></span>
+  <%= content_tag('span', h(e.project), :class => 'project') %>
+  <%= link_to format_activity_title(e.event_title), e.event_url %></dt>
+  <dd><span class="description"><%= format_activity_description(e.event_description) %></span></dd>
+<% end -%>
+</dl>
+
+<% end %>
+</div>
+<% else %>
+        <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+

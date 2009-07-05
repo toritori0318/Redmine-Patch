@@ -4,9 +4,9 @@
   <%= textilizable Setting.welcome_text %>
   <% if @news.any? %>
   <div class="box">
-	<h3><%=l(:label_news_latest)%></h3>
-		<%= render :partial => 'news/news', :collection => @news %>
-		<%= link_to l(:label_news_view_all), :controller => 'news' %>
+    <h3><%=l(:label_news_latest)%></h3>
+        <%= render :partial => 'news/news', :collection => @news %>
+        <%= link_to l(:label_news_view_all), :controller => 'news' %>
   </div>
   <% end %>
   <%= call_hook(:view_welcome_index_left, :projects => @projects) %>
@@ -18,21 +18,36 @@
 <%    project_tree.keys.each {|p| project_tree[p] -= [p]} %>
 
 
+
+<% user_projects_by_root = User.current.projects.find(:all, :include => :parent).group_by(&:root) %>
+
+
+
 <div class="splitcontentright">
     <% if @projects.any? %>
-	<div class="box">
-	<h3 class="icon22 icon22-projects"><%=l(:label_project)%></h3>
-		<ul>
-                <% project_tree.keys.sort.each do |project| %>
-			<li>
-			<%= link_to h(project.name), :controller => 'projects', :action => 'show', :id => project %> 
-			</li>
-		<% end %>
-		</ul>
-	</div>
-	<% end %>
+    <div class="box">
+    <h3 class="icon22 icon22-projects"><%=l(:label_project)%></h3>
+        <ul>
+
+
+<% user_projects_by_root.keys.sort.each do |root| %>
+    <li>
+      <%= link_to h(root.name), :controller => 'projects', :action => 'show', :id => root %> 
+    </li>
+    <% user_projects_by_root[root].sort.each do |project| %>
+        <% next if project == root %>
+            <ul><li>
+            <%= link_to h(project.name), :controller => 'projects', :action => 'show', :id => project %> 
+            </li></ul>
+    <% end %>
+    <% end %>
+
+
+        </ul>
+    </div>
+    <% end %>
     <%= call_hook(:view_welcome_index_right, :projects => @projects) %>
-</div>	
+</div>    
 
 <% content_for :header_tags do %>
 <%= auto_discovery_link_tag(:atom, {:controller => 'news', :action => 'index', :key => User.current.rss_key, :format => 'atom'},

@@ -24,6 +24,8 @@ class MyController < ApplicationController
              'issuesreportedbyme' => :label_reported_issues,
              'issueswatched' => :label_watched_issues,
              'forummessaged' => :label_recent_messages,
+             'boardswatched' => :label_watched_boards,
+             'messageswatched' => :label_watched_messages,
              'activity' => :label_activity,
              'news' => :label_news_latest,
              'calendar' => :label_calendar,

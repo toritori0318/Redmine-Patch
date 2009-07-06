@@ -1,0 +1,7 @@
+<h3><%=l(:label_watched_messages)%></h3>
+<% messages = Message.find(:all, 
+                               :include => [:watchers],
+                               :limit => 10, 
+                               :conditions => ["#{Watcher.table_name}.user_id = ? ", user.id],
+                               :order => "#{Message.table_name}.updated_on DESC") %>
+<%= render :partial => 'messages/list_simple', :locals => { :messages => messages } %>

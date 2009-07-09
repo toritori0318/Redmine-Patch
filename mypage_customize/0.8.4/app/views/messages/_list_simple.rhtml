@@ -4,20 +4,20 @@
         <table class="list boards">
                 <thead><tr>
                 <th><%=l(:label_board)%></th>
-                <th><%=l(:label_topic_plural)%></th>
                 <th><%=l(:label_message_plural)%></th>
+                <th><%=l(:label_preview)%></th>
                 </tr></thead>
                 <tbody>
                 <% for message in messages %>
                 <tr class="hascontextmenu <%= cycle('odd', 'even') %> ">
-                        <td><%= h(message.board.name) %> </td>
-                        <td>
-                        
-                           <%= link_to h(truncate(message.subject,20)), {:controller => 'messages', :action => 'show', :board_id => message.board_id, :id => message.root, :anchor => (message.parent_id ? "message-#{message.id}" : nil)}  %>
-
-                           <br> <%= format_time(message.updated_on) %>
-                        </td>
-                        <td><%= h(truncate(message.content,30)) %> </td>
+                  <td>
+                    <%= link_to h(message.board.name), {:project_id => message.board.project.id, :action => 'show', :id => message.board, :controller => 'boards'}, :class => "icon22 icon22-comment"  %>
+                  </td>
+                  <td>
+                     <%= link_to h(truncate(message.subject,20)), {:controller => 'messages', :action => 'show', :board_id => message.board_id, :id => message.root, :anchor => (message.parent_id ? "message-#{message.id}" : nil)}  %>
+                     <br> <%= format_time(message.updated_on) %>
+                  </td>
+                  <td><%= h(truncate(message.content,30)) %> </td>
                 </tr>
                 <% end %>
                 </tbody>

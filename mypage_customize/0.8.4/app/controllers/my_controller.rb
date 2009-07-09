@@ -27,6 +27,7 @@ class MyController < ApplicationController
              'boardswatched' => :label_watched_boards,
              'messageswatched' => :label_watched_messages,
              'activity' => :label_activity,
+             'projects' => :label_project,
              'news' => :label_news_latest,
              'calendar' => :label_calendar,
              'documents' => :label_document_plural,

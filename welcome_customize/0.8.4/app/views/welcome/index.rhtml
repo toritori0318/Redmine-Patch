@@ -12,37 +12,26 @@
   <%= call_hook(:view_welcome_index_left, :projects => @projects) %>
 </div>
 
-
-<%    projects = Project.find :all, :conditions => Project.visible_by(User.current), :include => :parent %>
-<%    project_tree = projects.group_by {|p| p.parent || p} %>
-<%    project_tree.keys.each {|p| project_tree[p] -= [p]} %>
-
-
-
 <% user_projects_by_root = User.current.projects.find(:all, :include => :parent).group_by(&:root) %>
-
-
 
 <div class="splitcontentright">
     <% if @projects.any? %>
     <div class="box">
-    <h3 class="icon22 icon22-projects"><%=l(:label_project)%></h3>
+      <h3 class="icon22 icon22-projects"><%=l(:label_project)%></h3>
         <ul>
-
-
-<% user_projects_by_root.keys.sort.each do |root| %>
-    <li>
-      <%= link_to h(root.name), :controller => 'projects', :action => 'show', :id => root %> 
-    </li>
-    <% user_projects_by_root[root].sort.each do |project| %>
-        <% next if project == root %>
-            <ul><li>
-            <%= link_to h(project.name), :controller => 'projects', :action => 'show', :id => project %> 
-            </li></ul>
-    <% end %>
-    <% end %>
-
-
+          <% user_projects_by_root.keys.sort.each do |root| %>
+           <li>
+             <%= link_to h(root.name), :controller => 'projects', :action => 'show', :id => root %> 
+           </li>
+           <% user_projects_by_root[root].sort.each do |project| %>
+             <% next if project == root %>
+             <ul>
+               <li>
+                 <%= link_to h(project.name), :controller => 'projects', :action => 'show', :id => project %> 
+               </li>
+             </ul>
+           <% end %>
+          <% end %>
         </ul>
     </div>
     <% end %>

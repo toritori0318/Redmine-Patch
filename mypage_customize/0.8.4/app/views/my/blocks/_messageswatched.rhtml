@@ -1,4 +1,4 @@
-<h3><%=l(:label_watched_messages)%></h3>
+<h3 class="icon22 icon22-projects"><%=l(:label_watched_messages)%></h3>
 <% messages = Message.find(:all, 
                                :include => [:watchers],
                                :limit => 10, 

@@ -1,0 +1,36 @@
+<% if projects && projects.any? %>
+
+
+<% form_tag({}) do %>
+
+
+<% projects.keys.sort.each do |project| %>
+
+ <ul>
+  <li><%= link_to h(project.name), {:action => 'show', :id => project}, :class => (User.current.member_of?(project) ? "icon icon-fav" : "") %></h3>
+  </li>
+ <% if projects[project].any? %>
+    <ul>
+    <% projects[project].sort.collect do |subproject| %>
+      <li>
+        <%= link_to h(subproject.name), {:action => 'show', :id => subproject}, :class => (User.current.member_of?(subproject) ? "icon icon-fav" : "") %>
+      </li>
+    <% end %>
+    </ul>
+ <% end %>
+
+ </ul>
+
+<% end %>
+
+ <% if User.current.logged? %>
+   <p style="text-align:right;">
+    <span class="icon icon-fav"><%= l(:label_my_projects) %></span>
+   </p>
+ <% end %>
+
+
+<% end %>
+<% else %>
+        <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

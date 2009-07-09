@@ -1,4 +1,4 @@
-<h3><%=l(:label_recent_messages)%></h3>
+<h3 class="icon22 icon22-projects"><%=l(:label_recent_messages)%></h3>
 <% reported_messages = Message.find(:all, 
                                 :conditions => ["author_id=? ", user.id],
                                 :limit => 10, 

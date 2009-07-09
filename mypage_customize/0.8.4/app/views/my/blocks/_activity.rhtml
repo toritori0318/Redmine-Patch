@@ -1,4 +1,4 @@
-<h3><%=l(:label_activity)%></h3>
+<h3 class="icon22 icon22-projects"><%=l(:label_activity)%></h3>
 
 <%  events = Redmine::Activity::Fetcher.new(User.current, :author => @user).events(nil, nil, :limit => 5) %>
 <%  events_by_day = events.group_by(&:event_date) %>

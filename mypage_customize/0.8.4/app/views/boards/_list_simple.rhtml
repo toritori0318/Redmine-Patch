@@ -6,25 +6,23 @@
 
 <table class="list boards">
   <thead><tr>
+    <th><%= l(:label_project) %></th>
     <th><%= l(:label_board) %></th>
-    <th><%= l(:label_topic_plural) %></th>
-    <th><%= l(:label_message_plural) %></th>
     <th><%= l(:label_message_last) %></th>
   </tr></thead>
   <tbody>
 <% for board in boards %>
   <tr class="<%= cycle 'odd', 'even' %>">
     <td>
+      <%= link_to h(board.project.name), {:action => 'show', :id => board.project} %>
+    </td>
+    <td>
      <%= link_to h(board.name), {:project_id => board.project.id, :action => 'show', :id => board, :controller => 'boards'}, :class => "icon22 icon22-comment"  %>      
     </td>
-    <td align="center"><%= board.topics_count %></td>
-    <td align="center"><%= board.messages_count %></td>
     <td>
     <small>
       <% if board.last_message %>
-      <%= authoring board.last_message.created_on, board.last_message.author %><br />
       <%= link_to h(truncate(board.last_message.subject,20)), {:controller => 'messages', :action => 'show', :board_id => board.id, :id => board.last_message.root, :anchor => (board.last_message.parent_id ? "message-#{board.last_message.id}" : nil)}  %>
-
       <% end %>
     </small>
     </td>

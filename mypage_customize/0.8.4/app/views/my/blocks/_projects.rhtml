@@ -1,0 +1,7 @@
+<h3 class="icon22 icon22-projects"><%=l(:label_project)%></h3>
+
+<%  projects_pre = Project.find :all, :conditions => Project.visible_by(User.current), :include => :parent 
+  projects = projects_pre.group_by {|p| p.parent || p} 
+  projects.keys.each {|p| projects[p] -= [p]}  %>
+
+<%= render :partial => 'projects/list_simple', :locals => { :projects => projects } %>

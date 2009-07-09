@@ -1,4 +1,4 @@
-<h3><%=l(:label_watched_borads)%></h3>
+<h3 class="icon22 icon22-projects"><%=l(:label_watched_boards)%></h3>
 <% boards = Board.find(:all, 
                                :include => [:project, :watchers],
                                :limit => 10, 
